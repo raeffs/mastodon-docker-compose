@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  mastodon-base:
+    image: 'tootsuite/mastodon'
+    volumes:
+      - 'mastodon-volume:/mastodon/public/system'
+    environment:
+      RAILS_ENV: 'production'
+      LOCAL_DOMAIN: '${MASTODON_DOMAIN}'
+      REDIS_HOST: 'mastodon-redis' # name of the redis container
+      DB_HOST: 'mastodon-db' # name of the database container
+      DB_NAME: '${MASTODON_POSTGRES_DATABASE}'
+      DB_USER: '${MASTODON_POSTGRES_USERNAME}'
+      DB_PASS: '${MASTODON_POSTGRES_PASSWORD}'
+      SECRET_KEY_BASE: '${MASTODON_SECRET_KEY_BASE}'
+      OTP_SECRET: '${MASTODON_OTP_SECRET}'
+      SMTP_SERVER: '${SMTP_SERVER}'
+      SMTP_PORT: '${SMTP_PORT}'
+      SMTP_LOGIN: '${SMTP_LOGIN}'
+      SMTP_PASSWORD: '${SMTP_PASSWORD}'
+      SMTP_FROM_ADDRESS: '${SMTP_FROM_ADDRESS}'
+      ES_ENABLED: 'true'
+      ES_HOST: 'mastodon-es' # name of the elasticsearch container
