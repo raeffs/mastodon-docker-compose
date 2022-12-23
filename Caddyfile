@@ -7,3 +7,12 @@
     reverse_proxy mastodon-web:3000
   }
 }
+
+{$MASTODON_S3_DOMAIN} {
+  handle {
+    rewrite * {$MASTODON_S3_PATH_PREFIX}{uri}
+    reverse_proxy {$MASTODON_S3_ENDPOINT} {
+      header_up -Host
+    }
+  }
+}

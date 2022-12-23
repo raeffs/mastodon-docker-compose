@@ -96,6 +96,9 @@ services:
       - './Caddyfile:/etc/caddy/Caddyfile:ro'
     environment:
       MASTODON_DOMAIN: '${MASTODON_DOMAIN}'
+      MASTODON_S3_DOMAIN: '${MASTODON_S3_DOMAIN}'
+      MASTODON_S3_ENDPOINT: '${MASTODON_S3_ENDPOINT}'
+      MASTODON_S3_PATH_PREFIX: '${MASTODON_S3_PATH_PREFIX}'
     ports:
       - '80:80'
       - '443:443'
