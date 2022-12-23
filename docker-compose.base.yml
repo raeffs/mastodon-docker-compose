@@ -22,3 +22,5 @@ services:
       SMTP_FROM_ADDRESS: '${SMTP_FROM_ADDRESS}'
       ES_ENABLED: 'true'
       ES_HOST: 'mastodon-es' # name of the elasticsearch container
+      VAPID_PRIVATE_KEY: '${MASTODON_VAPID_PRIVATE_KEY}'
+      VAPID_PUBLIC_KEY: '${MASTODON_VAPID_PUBLIC_KEY}'
