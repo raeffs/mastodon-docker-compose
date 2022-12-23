@@ -3,8 +3,6 @@ version: '3.8'
 services:
   mastodon-base:
     image: 'tootsuite/mastodon'
-    volumes:
-      - 'mastodon-data-volume:/mastodon/public/system'
     environment:
       RAILS_ENV: 'production'
       LOCAL_DOMAIN: '${MASTODON_DOMAIN}'
