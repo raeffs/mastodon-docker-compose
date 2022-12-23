@@ -4,7 +4,7 @@ services:
   mastodon-base:
     image: 'tootsuite/mastodon'
     volumes:
-      - 'mastodon-volume:/mastodon/public/system'
+      - 'mastodon-data-volume:/mastodon/public/system'
     environment:
       RAILS_ENV: 'production'
       LOCAL_DOMAIN: '${MASTODON_DOMAIN}'

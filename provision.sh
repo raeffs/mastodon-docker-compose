@@ -15,4 +15,3 @@ else
     echo "Provisioning done"
     touch "$CHECK"
 fi
-
