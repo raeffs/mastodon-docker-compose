@@ -14,5 +14,6 @@
     reverse_proxy {$MASTODON_S3_ENDPOINT} {
       header_up -Host
     }
+    header ?Cache-Control "public, max-age=315576000, immutable"
   }
 }
