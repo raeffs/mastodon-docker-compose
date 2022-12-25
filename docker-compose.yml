@@ -16,6 +16,9 @@ services:
 
   mastodon-redis:
     image: 'redis:alpine'
+    command: 'redis-server --save 60 1 --loglevel warning'
+    volumes:
+      - 'mastodon-redis-volume:/data'
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
       interval: 5s
@@ -107,13 +110,13 @@ services:
         condition: service_healthy
 
 volumes:
-  mastodon-data-volume:
-    external: true
   mastodon-db-volume:
+    external: true
+  mastodon-es-volume:
+    external: true
+  mastodon-redis-volume:
     external: true
   caddy-data-volume:
     external: true
   caddy-config-volume:
-    external: true
-  mastodon-es-volume:
     external: true
