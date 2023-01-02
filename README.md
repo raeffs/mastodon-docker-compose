@@ -4,3 +4,4 @@ This repository contains the configuration files I described in my blog posts ab
 
 - [Part 1](https://www.raeffs.dev/blog/self-hosting/2022-11-11-mastodon-with-docker/)
 - [Part 2](https://www.raeffs.dev/blog/self-hosting/2022-12-04-mastodon-improvements/)
+- [Part 3](https://www.raeffs.dev/blog/self-hosting/2023-01-02-mastodon-s3-integration/)

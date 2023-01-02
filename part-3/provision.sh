@@ -11,7 +11,7 @@ if [ $? -eq 0 ]; then
 else
     echo "Provisioning mastodon..."
 
-    bin/tootctl accounts create $MASTODON_ADMIN_USERNAME --email $MASTODON_ADMIN_EMAIL --confirmed --role Admin
+    bin/tootctl accounts create $MASTODON_ADMIN_USERNAME --email $MASTODON_ADMIN_EMAIL --confirmed --role Owner
 
     echo "Provisioning done"
 fi

@@ -1,0 +1,9 @@
+{$MASTODON_DOMAIN} {
+  handle /api/v1/streaming* {
+    reverse_proxy mastodon-streaming:4000
+  }
+
+  handle {
+    reverse_proxy mastodon-web:3000
+  }
+}

@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  mastodon-db:
+    image: 'postgres:alpine'
+    volumes:
+      - 'mastodon-db-volume:/var/lib/postgresql/data'
+    environment:
+      POSTGRES_DB: '${MASTODON_POSTGRES_DATABASE}'
+      POSTGRES_USER: '${MASTODON_POSTGRES_USERNAME}'
+      POSTGRES_PASSWORD: '${MASTODON_POSTGRES_PASSWORD}'
+
+  mastodon-redis:
+    image: 'redis:alpine'
+
+  mastodon-proxy:
+    image: 'caddy:latest'
+    command: 'caddy reverse-proxy --from ${MASTODON_DOMAIN} --to mastodon-web:3000'
+    ports:
+      - '80:80'
+      - '443:443'
+    depends_on:
+      - mastodon-web
+
+  mastodon-web:
+    image: 'tootsuite/mastodon'
+    command: 'bash -c "/provision.sh; rm -f /mastodon/tmp/pids/server.pid; bundle exec rails s -p 3000"'
+    volumes:
+      - 'mastodon-volume:/mastodon/public/system'
+      - './provision.sh:/provision.sh:ro'
+    environment:
+      RAILS_ENV: 'production'
+      LOCAL_DOMAIN: '${MASTODON_DOMAIN}'
+      REDIS_HOST: 'mastodon-redis' # name of the redis container
+      DB_HOST: 'mastodon-db' # name of the database container
+      DB_NAME: '${MASTODON_POSTGRES_DATABASE}'
+      DB_USER: '${MASTODON_POSTGRES_USERNAME}'
+      DB_PASS: '${MASTODON_POSTGRES_PASSWORD}'
+      SECRET_KEY_BASE: '${MASTODON_SECRET_KEY_BASE}'
+      OTP_SECRET: '${MASTODON_OTP_SECRET}'
+      MASTODON_ADMIN_USERNAME: '${MASTODON_ADMIN_USERNAME}'
+      MASTODON_ADMIN_EMAIL: '${MASTODON_ADMIN_EMAIL}'
+    depends_on:
+      - mastodon-db
+      - mastodon-redis
+
+  mastodon-sidekiq:
+    image: 'tootsuite/mastodon'
+    command: 'bundle exec sidekiq'
+    volumes:
+      - 'mastodon-volume:/mastodon/public/system'
+    environment:
+      RAILS_ENV: 'production'
+      LOCAL_DOMAIN: '${MASTODON_DOMAIN}'
+      REDIS_HOST: 'mastodon-redis' # name of the redis container
+      DB_HOST: 'mastodon-db' # name of the database container
+      DB_NAME: '${MASTODON_POSTGRES_DATABASE}'
+      DB_USER: '${MASTODON_POSTGRES_USERNAME}'
+      DB_PASS: '${MASTODON_POSTGRES_PASSWORD}'
+      SECRET_KEY_BASE: '${MASTODON_SECRET_KEY_BASE}'
+      OTP_SECRET: '${MASTODON_OTP_SECRET}'
+      SMTP_SERVER: '${SMTP_SERVER}'
+      SMTP_PORT: '${SMTP_PORT}'
+      SMTP_LOGIN: '${SMTP_LOGIN}'
+      SMTP_PASSWORD: '${SMTP_PASSWORD}'
+      SMTP_FROM_ADDRESS: '${SMTP_FROM_ADDRESS}'
+    depends_on:
+      - mastodon-db
+      - mastodon-redis
+
+volumes:
+  mastodon-volume:
+    external: true
+  mastodon-db-volume:
+    external: true
